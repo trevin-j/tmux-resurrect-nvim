@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-# "nvim session strategy"
-#
-# Same as vim strategy, see file 'vim_session.sh'
+# "nvim session strategy" for tmux-resurrect
 
 ORIGINAL_COMMAND="$1"
 DIRECTORY="$2"
 
+SESSION_DIR=$(tmux show-option -gqv "@resurrect-nvim-session-dir")
+SESSION_DIR="${SESSION_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/nvim/sessions}"
+
+encode_path() {
+	echo "$1" | sed 's|/|%|g'
+}
+
 nvim_session_file_exists() {
-	[ -e "${DIRECTORY}/Session.vim" ]
+	[ -e "${SESSION_DIR}/$(encode_path "$DIRECTORY").vim" ]
 }
 
 original_command_contains_session_flag() {
@@ -17,14 +22,12 @@ original_command_contains_session_flag() {
 
 main() {
 	if nvim_session_file_exists; then
-		echo "nvim -S"
+		echo "nvim -S \"${SESSION_DIR}/$(encode_path "$DIRECTORY").vim\""
 	elif original_command_contains_session_flag; then
-		# Session file does not exist, yet the original nvim command contains
-		# session flag `-S`. This will cause an error, so we're falling back to
-		# starting plain nvim.
 		echo "nvim"
 	else
 		echo "$ORIGINAL_COMMAND"
 	fi
 }
+
 main
