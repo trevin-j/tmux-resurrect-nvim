@@ -13,7 +13,7 @@ encode_path() {
 }
 
 encode_path_nvim() {
-	echo "$1" | sed 's|/|%%|g'
+	echo "$1" | sed 's|/|\\%|g'
 }
 
 nvim_session_file_exists() {
