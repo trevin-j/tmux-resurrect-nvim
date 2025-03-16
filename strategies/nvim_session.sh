@@ -12,6 +12,10 @@ encode_path() {
 	echo "$1" | sed 's|/|%|g'
 }
 
+encode_path_nvim() {
+	echo "$1" | sed 's|/|%%|g'
+}
+
 nvim_session_file_exists() {
 	[ -e "${SESSION_DIR}/$(encode_path "$DIRECTORY").vim" ]
 }
@@ -22,7 +26,7 @@ original_command_contains_session_flag() {
 
 main() {
 	if nvim_session_file_exists; then
-		echo "nvim -S \"${SESSION_DIR}/$(encode_path "$DIRECTORY").vim\""
+		echo "nvim -S \"${SESSION_DIR}/$(encode_path_nvim "$DIRECTORY").vim\""
 	elif original_command_contains_session_flag; then
 		echo "nvim"
 	else
