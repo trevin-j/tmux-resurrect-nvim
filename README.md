@@ -1,6 +1,35 @@
-# Tmux Resurrect
+# Tmux Resurrect - Nvim Fork!
 
-[![Build Status](https://travis-ci.org/tmux-plugins/tmux-resurrect.svg?branch=master)](https://travis-ci.org/tmux-plugins/tmux-resurrect)
+## What's New in This Fork 🚀
+
+This fork of **tmux-resurrection** brings a smoother, more efficient workflow for **Neovim** users who want their sessions seamlessly integrated with tmux! 😎
+
+### Key Features:
+- **✨ Neovim Session Support**: This version adds automatic support for **persistence.nvim**, which means your Neovim sessions will now load and restore automatically with tmux. Other session managers should work, but **persistence.nvim** is the only one that's been tested so far. Don’t worry if yours isn’t supported — it’s likely easy to add!
+  
+- **💾 Autosave Your Session**: To make sure your session is always up to date, you’ll want to save frequently. We recommend adding this `autocmd` to your `init.lua` or `init.vim` for auto-saving:
+
+  ```lua
+  vim.api.nvim_create_autocmd(
+    { "BufWinLeave", "BufWritePost", "WinLeave", "TabLeave" },
+    {
+      group = vim.api.nvim_create_augroup("PersistenceAutoSave", { clear = true }),
+      callback = function()
+        require("persistence").save()
+      end,
+    }
+  )
+  ```
+
+  This will ensure that your session saves whenever you switch buffers, windows, or tabs — no more worrying about losing progress! 💾✨
+
+- **🛠️ Future Git Branch Saving**: Right now, git branch saves aren’t supported, but it’s on the way! Stay tuned for this feature in the near future. 📅
+
+With these updates, tmux and Neovim will work together like never before — saving you time, keeping your sessions safe, and making your workflow smoother. Enjoy the ride! 🚀
+
+P.S. It works great with [Tmux Continuum!](https://github.com/tmux-plugins/tmux-continuum)
+
+# Tmux Resurrect
 
 Restore `tmux` environment after system restart.
 
@@ -65,7 +94,7 @@ overwritten.
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
-    set -g @plugin 'tmux-plugins/tmux-resurrect'
+    set -g @plugin 'trevin-j/tmux-resurrect-nvim'
 
 Hit `prefix + I` to fetch the plugin and source it. You should now be able to
 use the plugin.
@@ -74,7 +103,7 @@ use the plugin.
 
 Clone the repo:
 
-    $ git clone https://github.com/tmux-plugins/tmux-resurrect ~/clone/path
+    $ git clone https://github.com/trevin-j/tmux-resurrect-nvim.git ~/clone/path
 
 Add this line to the bottom of `.tmux.conf`:
 
